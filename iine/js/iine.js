@@ -17,13 +17,13 @@ function ajaxstart(act) {
    //Ajax通信処理
     $.ajax({
       type:"POST",
-      uel:"https://www.enlarge.tokyo/iine_btn.php?act="+act
-    })
-    .done(function(date){
+      url:"https://enlarge.tokyo/public_html/wp/wp-content/themes/reform2/iine.php?act="+act
+       success: function(data){
         //返り値がある場合のみ処理
         if(date.length > 0){
           //返り値を指定class名:"iine-cnt"の値に差し込む
-          $(".line-cnt").text("→"+date);
+          $(".line-cnt").text("→ "+date);
         }
+      }
     });
 }

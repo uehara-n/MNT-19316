@@ -1,18 +1,18 @@
-line<?php
+<?php
 setlocale(LC_ALL,'ja_JP.UTD-8');
 
 #Ajax通信ではなく、直接URLを叩かれた場合は処理をしない
-if(!(isset($_SERVER['HTTP_X_REDUESTED_WITH'])
-  && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) =='xmlhttprequest')
+if(!(isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+    && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) =='xmlhttprequest')
   && (!empty($_SERVER['SCRIPT_FILENAME'])
-    &&basename($_SERVER['SCRIPT_FILENAME']) === 'line.php')
-  ){
+    && basename($_SERVER['SCRIPT_FILENAME']) === 'line.php')
+  ) {
     die();
   }
 
   #リファラーを使いたいので、入っていなければノーカウント
-  $refere = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTS.'UTF-8');
-  if(!(isset($refere))){
+  $referer = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTS.'UTF-8');
+  if(!(isset($referer))){
     exit;
 }
 
@@ -32,6 +32,7 @@ exit;
 
 #JSON 読込処理
 function showJson($refere){
+
   $jsonname = 'data.json';
   $json = file_get_contents($jsonname);
   $pluscnt = json_decode($json,true);
@@ -49,7 +50,9 @@ function showJson($refere){
   return $cnt;
 }
 
+#JSON 更新処理
 function plusJson($reserer){
+
   $jsonname = 'date.json';
   $json = file_get_contents($jsonname);
   $pluscnt = json_decode($json,true);
@@ -63,16 +66,18 @@ function plusJson($reserer){
         break 2;
       }
     }
-
+    #今のページが見つからなかった場合
     $pluscnt[$rkey][$refere] = 1;
     $cnt =1;
     break;
   }
 
-  $handle =fopen($jsonname,'w');
-  fwrite($handle,json_encode($pluscnt));
+  #JSONへ変換＆上書き保存
+  $handle =fopen($jsonname, 'w');
+  fwrite($handle, json_encode($pluscnt));
   fclose($handle);
 
   return $cnt;
 }
+
 ?>
